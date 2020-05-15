@@ -1,12 +1,11 @@
-﻿using commander.Models;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace commander.Forms
 {
     public partial class FrProjectCreate : Form
     {
-        public string TextBoxNameValue;
+        public string TbxNameValue;
 
         public FrProjectCreate()
         {
@@ -20,12 +19,12 @@ namespace commander.Forms
 
         //START -- BUTTONS
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             HandleCancel();
         }
 
-        private void ButtonSubmit_Click(object sender, EventArgs e)
+        private void BtnSubmit_Click(object sender, EventArgs e)
         {
             HandleSubmit();
         }
@@ -34,7 +33,7 @@ namespace commander.Forms
 
         //START -- TEXT BOXES
 
-        private void TextBoxName_KeyPress(object sender, KeyPressEventArgs e)
+        private void TbxName_KeyPress(object sender, KeyPressEventArgs e)
         {
             switch (e.KeyChar)
             {
@@ -59,7 +58,7 @@ namespace commander.Forms
         private void HandleSubmit()
         {
             //set internal value
-            TextBoxNameValue = textBoxName.Text;
+            TbxNameValue = tbxName.Text;
 
             //set ok dialog result
             DialogResult = DialogResult.OK;

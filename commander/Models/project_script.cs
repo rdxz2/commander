@@ -16,8 +16,10 @@ namespace commander.Models
     {
         public int id { get; set; }
         public int id_project { get; set; }
+        public int order { get; set; }
         public string name { get; set; }
-        public string path { get; set; }
+        public string script { get; set; }
+        public Nullable<System.DateTime> last_executed { get; set; }
         public System.DateTime cd { get; set; }
     
         public virtual project project { get; set; }

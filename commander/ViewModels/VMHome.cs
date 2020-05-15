@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace commander.ViewModels
@@ -16,6 +17,8 @@ namespace commander.ViewModels
             //START -- PRIVATE PROPERTIES
 
             private int? ValuePid = null;
+
+            private DateTime? ValueLastExecuted = null;
 
             //END -- PRIVATE PROPERTIES
 
@@ -43,18 +46,36 @@ namespace commander.ViewModels
                 }
             }
 
+            public DateTime? LastExecuted
+            {
+                get
+                {
+                    return ValueLastExecuted;
+                }
+                set
+                {
+                    if (value != ValueLastExecuted)
+                    {
+                        ValueLastExecuted = value;
+                        NotifyPropertyChanged();
+                    }
+                }
+            }
+
             //END -- PUBLIC PROPERTIES
 
             //private constructor
-            private ProjectScript(int Id, string Name, string Script)
+            private ProjectScript(int Id, string Name, string Script, DateTime? LastExecuted)
             {
                 this.Id = Id;
                 this.Name = Name;
                 this.Script = Script;
+
+                ValueLastExecuted = LastExecuted;
             }
 
             //public factory method
-            public static ProjectScript CreateNew(int Id, string Name, string Script) => new ProjectScript(Id, Name, Script);
+            public static ProjectScript CreateNew(int Id, string Name, string Script, DateTime? LastExecuted) => new ProjectScript(Id, Name, Script, LastExecuted);
 
 
             public event PropertyChangedEventHandler PropertyChanged;

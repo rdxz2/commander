@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace commander.Utilities
 {
@@ -15,7 +11,7 @@ namespace commander.Utilities
             bool isSuccess = false;
 
             //create directory if not exist
-            if(!Directory.Exists(path)) Directory.CreateDirectory(Path.GetDirectoryName(path));
+            if (!Directory.Exists(path)) Directory.CreateDirectory(Path.GetDirectoryName(path));
 
             //delete file if exist
             if (File.Exists(path)) File.Delete(path);
@@ -46,6 +42,11 @@ namespace commander.Utilities
             fileContent = File.ReadAllText(path);
 
             return fileContent;
+        }
+
+        public void Delete(string path)
+        {
+            if (File.Exists(path)) File.Delete(path);
         }
     }
 }

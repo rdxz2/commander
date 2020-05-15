@@ -42,18 +42,18 @@ namespace commander.Forms
         {
             //set application version label
             string appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            labelAppVersion.Text = $"v{appVersion}";
+            lblAppVersion.Text = $"v{appVersion}";
 
             //load project list box with user's projects
-            ListBoxProjects_Populate();
+            LbxProjects_Populate();
 
-            //load project scripts
-            DataGridProjectScripts_Populate();
+            ////load project scripts
+            //DataGridProjectScripts_Populate();
         }
 
         //START -- BUTTONS
 
-        private void ButtonProjectAdd_Click(object sender, EventArgs e)
+        private void BtnProjectAdd_Click(object sender, EventArgs e)
         {
             using (FrProjectCreate frProjectCreate = new FrProjectCreate())
             {
@@ -65,7 +65,7 @@ namespace commander.Forms
                 //create database model
                 project tbiProject = new project
                 {
-                    name = frProjectCreate.TextBoxNameValue,
+                    name = frProjectCreate.TbxNameValue,
                     cd = DateTime.Now,
                     is_active = true
                 };
@@ -77,22 +77,22 @@ namespace commander.Forms
                 ettCommander.SaveChanges();
 
                 //repopulate project list box
-                ListBoxProjects_Populate();
+                LbxProjects_Populate();
             }
         }
 
-        private void ButtonProjectRemove_Click(object sender, EventArgs e)
+        private void BtnProjectRemove_Click(object sender, EventArgs e)
         {
             //get selected project from listbox
-            VMHome.Project listBoxProjectsSelectedItem = ListBoxProjects_GetSelectedItem();
+            VMHome.Project lbxProjectsSelectedItem = LbxProjects_GetSelectedItem();
 
             //get selected project's entity from database
-            project repoProject = ettCommander.projects.SingleOrDefault(m => m.id == listBoxProjectsSelectedItem.Id);
+            project repoProject = ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
 
             //make sure data is exist in database
-            if(repoProject == null)
+            if (repoProject == null)
             {
-                MessageBox.Show($"project '{listBoxProjectsSelectedItem.Name}' not found in database");
+                MessageBox.Show($"project '{lbxProjectsSelectedItem.Name}' not found in database");
 
                 return;
             }
@@ -105,15 +105,15 @@ namespace commander.Forms
             ettCommander.SaveChanges();
 
             //reload list box
-            ListBoxProjects_Populate();
+            LbxProjects_Populate();
         }
 
-        private void ButtonProjectScriptAdd_Click(object sender, EventArgs e)
+        private void BtnProjectScriptAdd_Click(object sender, EventArgs e)
         {
             //get selected project from listbox
-            VMHome.Project listBoxProjectsSelectedItem = ListBoxProjects_GetSelectedItem();
+            VMHome.Project lbxProjectsSelectedItem = LbxProjects_GetSelectedItem();
 
-            using (FrProjectScriptCreate frProjectScriptCreate = new FrProjectScriptCreate(listBoxProjectsSelectedItem))
+            using (FrProjectScriptCreate frProjectScriptCreate = new FrProjectScriptCreate(lbxProjectsSelectedItem))
             {
                 //open dialog and get its closed result
                 DialogResult result = frProjectScriptCreate.ShowDialog();
@@ -122,27 +122,12 @@ namespace commander.Forms
                 if (result != DialogResult.OK) return;
 
                 //get selected projcet's entity from database
-                project tbuProject = ettCommander.projects.SingleOrDefault(m => m.id == listBoxProjectsSelectedItem.Id);
+                project tbuProject = ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
 
                 //make sure data is exist in database
                 if (tbuProject == null)
                 {
-                    MessageBox.Show($"project '{listBoxProjectsSelectedItem.Name}' not found in database");
-
-                    return;
-                }
-
-                //create file name
-                string fileName = $"{tbuProject.name} {frProjectScriptCreate.TextBoxNameValue}.cmd".Replace(" ", "_");
-                string filePath = Path.Combine(applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, fileName);
-
-                //create file
-                bool isSuccess = utlFile.CreateAndWrite(filePath, frProjectScriptCreate.TextBoxScriptValue);
-
-                //make sure file creation is success
-                if(!isSuccess)
-                {
-                    MessageBox.Show($"file creation to {filePath} failed");
+                    MessageBox.Show($"project '{lbxProjectsSelectedItem.Name}' not found in database");
 
                     return;
                 }
@@ -150,8 +135,8 @@ namespace commander.Forms
                 //create database model
                 project_script tbiRepoProjectScript = new project_script
                 {
-                    name = frProjectScriptCreate.TextBoxNameValue,
-                    path = fileName,
+                    name = frProjectScriptCreate.TbxNameValue,
+                    script = frProjectScriptCreate.TbxScriptValue,
                     cd = DateTime.Now,
                 };
 
@@ -166,25 +151,25 @@ namespace commander.Forms
 
 
                 //repopulate project script data grid
-                DataGridProjectScripts_Populate();
+                DgvProjectScripts_Populate();
             }
         }
 
-        private void ButtonProjectScriptRemove_Click(object sender, EventArgs e)
+        private void BtnProjectScriptRemove_Click(object sender, EventArgs e)
         {
             //get selected row from data grid
-            VMHome.ProjectScript dataGridProjectScriptsSelectedRow = DataGridProjectScripts_GetSelectedRow();
+            VMHome.ProjectScript dgvProjectScriptsSelectedRow = DgvProjectScripts_GetSelectedRow();
 
             //make sure the selected item is available
-            if (dataGridProjectScriptsSelectedRow == null) return;
+            if (dgvProjectScriptsSelectedRow == null) return;
 
             //get selected row's entity from databsae
-            project_script repoProjectScript = ettCommander.project_script.SingleOrDefault(m => m.id == dataGridProjectScriptsSelectedRow.Id);
+            project_script repoProjectScript = ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
 
             //make sure data is exist in database
-            if(repoProjectScript == null)
+            if (repoProjectScript == null)
             {
-                MessageBox.Show($"project script '{dataGridProjectScriptsSelectedRow.Name}' not found in database");
+                MessageBox.Show($"project script '{dgvProjectScriptsSelectedRow.Name}' not found in database");
 
                 return;
             }
@@ -196,35 +181,36 @@ namespace commander.Forms
             ettCommander.SaveChanges();
 
             //reload data grid
-            DataGridProjectScripts_Populate();
+            DgvProjectScripts_Populate();
         }
 
         //END -- BUTTONS
 
         //START -- LIST BOXES
 
-        private VMHome.Project ListBoxProjects_GetSelectedItem() {
-            if(ListBoxProject_IsAnyItemSelected()) return (VMHome.Project)listBoxProjects.SelectedItem;
+        private VMHome.Project LbxProjects_GetSelectedItem()
+        {
+            if (LbxProject_IsAnyItemSelected()) return (VMHome.Project)lbxProjects.SelectedItem;
 
             MessageBox.Show("no project is selected");
 
             return null;
         }
 
-        private bool ListBoxProject_IsAnyItemSelected() => listBoxProjects.SelectedItems.Count > 0;
+        private bool LbxProject_IsAnyItemSelected() => lbxProjects.SelectedItems.Count > 0;
 
-        private void ListBoxProjects_SelectedIndexChanged(object sender, EventArgs e)
+        private void LbxProjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataGridProjectScripts_Populate();
+            DgvProjectScripts_Populate();
         }
 
-        private void ListBoxProjects_Populate()
+        private void LbxProjects_Populate()
         {
             var repoProjects = ettCommander.projects
                 .Where(m => m.is_active)
                 .ToList();
 
-            listBoxProjects.DataSource = repoProjects
+            lbxProjects.DataSource = repoProjects
                 .Select(m => new VMHome.Project
                 {
                     Id = m.id,
@@ -233,135 +219,125 @@ namespace commander.Forms
                 .ToList();
 
             //toggle remove script button & toggle add script button
-            buttonProjectRemove.Enabled = buttonProjectScriptAdd.Enabled = repoProjects.Count > 0;
+            btnProjectRemove.Enabled = btnProjectScriptAdd.Enabled = repoProjects.Count > 0;
         }
 
         //END -- LIST BOXES
 
         //START -- DATA GRIDS
 
-        private VMHome.ProjectScript DataGridProjectScripts_GetSelectedRow()
+        private VMHome.ProjectScript DgvProjectScripts_GetSelectedRow()
         {
-            if (DataGridProjectScripts_IsAnyRowSelected()) return (VMHome.ProjectScript) dataGridProjectScripts.CurrentRow.DataBoundItem;
+            if (DgvProjectScripts_IsAnyRowSelected()) return (VMHome.ProjectScript)dgvProjectScripts.CurrentRow.DataBoundItem;
 
             MessageBox.Show("no project script row is selected");
 
             return null;
         }
 
-        private bool DataGridProjectScripts_IsAnyRowSelected() => dataGridProjectScripts.SelectedRows.Count > 0;
+        private bool DgvProjectScripts_IsAnyRowSelected() => dgvProjectScripts.SelectedRows.Count > 0;
 
-        private VMHome.ProjectScript DataGridProjectScripts_GetSelectedRowByCell()
+        private VMHome.ProjectScript DgvProjectScripts_GetSelectedRowByCell()
         {
-            if (DataGridProjectScripts_IsAnyCellSelected()) return (VMHome.ProjectScript) dataGridProjectScripts.Rows[dataGridProjectScripts.CurrentCell.RowIndex].DataBoundItem;
+            if (DgvProjectScripts_IsAnyCellSelected()) return (VMHome.ProjectScript)dgvProjectScripts.Rows[dgvProjectScripts.CurrentCell.RowIndex].DataBoundItem;
 
             MessageBox.Show("no project script cell is selected");
 
             return null;
         }
 
-        private bool DataGridProjectScripts_IsAnyCellSelected() => dataGridProjectScripts.SelectedCells.Count > 0;
+        private bool DgvProjectScripts_IsAnyCellSelected() => dgvProjectScripts.SelectedCells.Count > 0;
 
-        private void DataGridProjectScripts_SelectionChanged(object sender, EventArgs e)
+        private void DgvProjectScripts_SelectionChanged(object sender, EventArgs e)
         {
             //toggle delete project script button
-            buttonProjectScriptRemove.Enabled = DataGridProjectScripts_IsAnyRowSelected();
+            btnProjectScriptRemove.Enabled = DgvProjectScripts_IsAnyRowSelected();
         }
 
-        private void DataGridProjectScripts_Populate()
+        private void DgvProjectScripts_Populate()
         {
             //get selected project from listbox
-            VMHome.Project listBoxProjectsSelectedItem = ListBoxProjects_GetSelectedItem();
+            VMHome.Project lbxProjectsSelectedItem = LbxProjects_GetSelectedItem();
 
-            bool isProjectFound = listBoxProjectsSelectedItem != null;
+            bool isProjectFound = lbxProjectsSelectedItem != null;
 
             //toggle add script button
-            buttonProjectScriptAdd.Enabled = isProjectFound;
+            btnProjectScriptAdd.Enabled = isProjectFound;
 
             //make sure project is exist in list box
             if (!isProjectFound) return;
 
             //get selected project
-            var project = ettCommander.projects.SingleOrDefault(m => m.is_active && m.id == listBoxProjectsSelectedItem.Id);
+            var project = ettCommander.projects.SingleOrDefault(m => m.is_active && m.id == lbxProjectsSelectedItem.Id);
             if (project == null) return;
 
             //set project script label
-            labelProjectScripts.Text = $"Scripts for '{project.name}'";
+            lblProjectScripts.Text = $"Scripts for '{project.name}'";
 
             //create binding list
             BindingList<VMHome.ProjectScript> bindingProjectScripts = new BindingList<VMHome.ProjectScript>();
             project.project_script
-               .Select(m => {
-                    //get script from file
-                    string script = utlFile.Read(Path.Combine(applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, m.path));
-
-                    return VMHome.ProjectScript.CreateNew(m.id, m.name, script);
-
-                    //return new VMHome.ProjectScript
-                    //{
-                    //    Id = m.id,
-                    //    Name = m.name,
-                    //    Script = script,
-                    //};
-               })
-               .ToList()
-               .ForEach(m => 
+                .Select(m =>
+                    VMHome.ProjectScript.CreateNew(m.id, m.name, m.script, m.last_executed)
+                )
+                .ToList()
+                .ForEach(m =>
                     bindingProjectScripts.Add(m)
                 );
 
-            projectScriptBindingSource.DataSource = bindingProjectScripts;
+            //bind to binding source
+            dgvBindsrcProjectScripts.DataSource = bindingProjectScripts;
 
-            dataGridProjectScripts.DataSource = projectScriptBindingSource;
-
-            ////populate data grid
-            //dataGridProjectScripts.DataSource = project.project_script
-            //    .Select(m => {
-            //        //get script from file
-            //        string script = utlFile.Read(Path.Combine(applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, m.path));
-
-            //        return new VMHome.ProjectScript
-            //        {
-            //            Id = m.id,
-            //            Name = m.name,
-            //            Script = script,
-            //        };
-            //    })
-            //    .ToList();
+            //bind to data grid
+            dgvProjectScripts.DataSource = dgvBindsrcProjectScripts;
         }
 
-        private void DataGridProjectScripts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void DgvProjectScripts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             //get selected row from data grid
-            VMHome.ProjectScript dataGridProjectScriptsSelectedRow = DataGridProjectScripts_GetSelectedRowByCell();
+            VMHome.ProjectScript dgvProjectScriptsSelectedRow = DgvProjectScripts_GetSelectedRowByCell();
 
             //make sure the selected item is available
-            if (dataGridProjectScriptsSelectedRow == null) return;
+            if (dgvProjectScriptsSelectedRow == null) return;
 
             //make sure the script is not being run
-            if (dataGridProjectScriptsSelectedRow.Pid.HasValue)
+            if (dgvProjectScriptsSelectedRow.Pid.HasValue)
             {
-                MessageBox.Show($"script '{dataGridProjectScriptsSelectedRow.Name}' is already active");
+                MessageBox.Show($"script '{dgvProjectScriptsSelectedRow.Name}' is already active");
 
                 return;
             }
 
             //get selected script entity's from database
-            var repoProjectScript = ettCommander.project_script.SingleOrDefault(m => m.id == dataGridProjectScriptsSelectedRow.Id);
+            var repoProjectScript = ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
 
             //make sure data is exist in database
-            if(repoProjectScript == null)
+            if (repoProjectScript == null)
             {
-                MessageBox.Show($"script '{dataGridProjectScriptsSelectedRow.Name}' is not found");
+                MessageBox.Show($"script '{dgvProjectScriptsSelectedRow.Name}' is not found");
 
                 return;
             }
 
             //START -- RUN SCRIPT
 
+            //create temporary file
+            string filePath = CombineScriptDirectoryWithFileName(CombineProjectNameWithScriptName(repoProjectScript.project.name, repoProjectScript.name));
+            bool isCreatingFileSuccess = utlFile.CreateAndWrite(filePath, repoProjectScript.script);
+            if (!isCreatingFileSuccess)
+            {
+                MessageBox.Show("failed creating temporary comand file");
+
+                return;
+            }
+
+            //get current time
+            DateTime now = DateTime.Now;
+
             //define process start configuration
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
-                FileName = Path.Combine(applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, repoProjectScript.path),
+                FileName = filePath,
                 UseShellExecute = false,
             };
 
@@ -370,25 +346,74 @@ namespace commander.Forms
             {
                 StartInfo = processStartInfo,
                 EnableRaisingEvents = true,
-                
             };
 
             //add event handler when process is exited
-            process.Exited += (object _sender,EventArgs _e) =>
+            process.Exited += (object _sender, EventArgs _e) =>
             {
                 //remove pid for this script
-                dataGridProjectScriptsSelectedRow.Pid = null;
+                dgvProjectScriptsSelectedRow.Pid = null;
+
+                //delete temporary file
+                utlFile.Delete(filePath);
             };
 
             //start process
             process.Start();
 
-            //set pid for this script
-            dataGridProjectScriptsSelectedRow.Pid = process.Id;
+            //set and last executed date for this script
+            dgvProjectScriptsSelectedRow.Pid = process.Id;
+            dgvProjectScriptsSelectedRow.LastExecuted = now;
 
             //END -- RUN SCRIPT
+
+            //update
+            repoProjectScript.last_executed = now;
+
+            //commit
+            ettCommander.SaveChanges();
+        }
+
+        private void DgvProjectScripts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            //string newCellValue = dataGridProjectScripts.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+            //get selected row from data grid
+            VMHome.ProjectScript dgvProjectScriptsSelectedRow = DgvProjectScripts_GetSelectedRowByCell();
+
+            //make sure the selected item is available
+            if (dgvProjectScriptsSelectedRow == null) return;
+
+            //get selected script entity's from database
+            var repoProjectScript = ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
+
+            //make sure data is exist in database
+            if (repoProjectScript == null)
+            {
+                MessageBox.Show($"script '{dgvProjectScriptsSelectedRow.Name}' is not found");
+
+                return;
+            }
+
+            //update
+            repoProjectScript.name = dgvProjectScriptsSelectedRow.Name;
+            repoProjectScript.script = dgvProjectScriptsSelectedRow.Script;
+
+            //commit
+            ettCommander.SaveChanges();
+
+            //reload project script data grid
+            DgvProjectScripts_Populate();
         }
 
         //END -- DATA GRIDS
+
+        //START -- HELPERS
+
+        private string CombineScriptDirectoryWithFileName(string databasePath) => Path.Combine(applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, databasePath);
+
+        private string CombineProjectNameWithScriptName(string projectName, string scriptName) => $"{projectName} {scriptName}.{CNSTSTRING.FILEEXTENSION_CMD}".Replace(" ", "_");
+
+        //END -- HELPERS
     }
 }

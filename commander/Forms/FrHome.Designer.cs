@@ -29,135 +29,143 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrHome));
-            this.listBoxProjects = new System.Windows.Forms.ListBox();
-            this.projectBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.buttonProjectAdd = new System.Windows.Forms.Button();
-            this.buttonProjectRemove = new System.Windows.Forms.Button();
-            this.labelTitle = new System.Windows.Forms.Label();
-            this.labelPojects = new System.Windows.Forms.Label();
-            this.labelCreator = new System.Windows.Forms.Label();
-            this.labelAppVersion = new System.Windows.Forms.Label();
-            this.dataGridProjectScripts = new System.Windows.Forms.DataGridView();
+            this.lbxProjects = new System.Windows.Forms.ListBox();
+            this.btnProjectAdd = new System.Windows.Forms.Button();
+            this.btnProjectRemove = new System.Windows.Forms.Button();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.lblPojects = new System.Windows.Forms.Label();
+            this.lblCreator = new System.Windows.Forms.Label();
+            this.lblAppVersion = new System.Windows.Forms.Label();
+            this.dgvProjectScripts = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.scriptDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastExecuted = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Pid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.projectScriptBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dgvBindsrcProjectScripts = new System.Windows.Forms.BindingSource(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.buttonProjectScriptAdd = new System.Windows.Forms.Button();
-            this.buttonProjectScriptRemove = new System.Windows.Forms.Button();
-            this.labelProjectScripts = new System.Windows.Forms.Label();
-            this.buttonInfo = new System.Windows.Forms.Button();
-            this.buttonSettings = new System.Windows.Forms.Button();
+            this.btnProjectScriptAdd = new System.Windows.Forms.Button();
+            this.btnProjectScriptRemove = new System.Windows.Forms.Button();
+            this.lblProjectScripts = new System.Windows.Forms.Label();
+            this.btnInfo = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.projectBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProjectScripts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBindsrcProjectScripts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.projectBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridProjectScripts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.projectScriptBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // listBoxProjects
+            // lbxProjects
             // 
-            this.listBoxProjects.DataSource = this.projectBindingSource;
-            this.listBoxProjects.DisplayMember = "Name";
-            this.listBoxProjects.FormattingEnabled = true;
-            this.listBoxProjects.ItemHeight = 16;
-            this.listBoxProjects.Location = new System.Drawing.Point(12, 109);
-            this.listBoxProjects.Name = "listBoxProjects";
-            this.listBoxProjects.Size = new System.Drawing.Size(155, 292);
-            this.listBoxProjects.TabIndex = 0;
-            this.listBoxProjects.SelectedIndexChanged += new System.EventHandler(this.ListBoxProjects_SelectedIndexChanged);
+            this.lbxProjects.DataSource = this.projectBindingSource;
+            this.lbxProjects.DisplayMember = "Name";
+            this.lbxProjects.FormattingEnabled = true;
+            this.lbxProjects.Location = new System.Drawing.Point(9, 89);
+            this.lbxProjects.Margin = new System.Windows.Forms.Padding(2);
+            this.lbxProjects.Name = "lbxProjects";
+            this.lbxProjects.Size = new System.Drawing.Size(117, 238);
+            this.lbxProjects.TabIndex = 0;
+            this.lbxProjects.SelectedIndexChanged += new System.EventHandler(this.LbxProjects_SelectedIndexChanged);
             // 
-            // projectBindingSource
+            // btnProjectAdd
             // 
-            this.projectBindingSource.DataSource = typeof(commander.ViewModels.VMHome.Project);
+            this.btnProjectAdd.Location = new System.Drawing.Point(9, 65);
+            this.btnProjectAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProjectAdd.Name = "btnProjectAdd";
+            this.btnProjectAdd.Size = new System.Drawing.Size(56, 19);
+            this.btnProjectAdd.TabIndex = 1;
+            this.btnProjectAdd.Text = "Add";
+            this.btnProjectAdd.UseVisualStyleBackColor = true;
+            this.btnProjectAdd.Click += new System.EventHandler(this.BtnProjectAdd_Click);
             // 
-            // buttonProjectAdd
+            // btnProjectRemove
             // 
-            this.buttonProjectAdd.Location = new System.Drawing.Point(12, 80);
-            this.buttonProjectAdd.Name = "buttonProjectAdd";
-            this.buttonProjectAdd.Size = new System.Drawing.Size(75, 23);
-            this.buttonProjectAdd.TabIndex = 1;
-            this.buttonProjectAdd.Text = "Add";
-            this.buttonProjectAdd.UseVisualStyleBackColor = true;
-            this.buttonProjectAdd.Click += new System.EventHandler(this.ButtonProjectAdd_Click);
+            this.btnProjectRemove.Enabled = false;
+            this.btnProjectRemove.Location = new System.Drawing.Point(70, 65);
+            this.btnProjectRemove.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProjectRemove.Name = "btnProjectRemove";
+            this.btnProjectRemove.Size = new System.Drawing.Size(56, 19);
+            this.btnProjectRemove.TabIndex = 2;
+            this.btnProjectRemove.Text = "Remove";
+            this.btnProjectRemove.UseVisualStyleBackColor = true;
+            this.btnProjectRemove.Click += new System.EventHandler(this.BtnProjectRemove_Click);
             // 
-            // buttonProjectRemove
+            // lblTitle
             // 
-            this.buttonProjectRemove.Enabled = false;
-            this.buttonProjectRemove.Location = new System.Drawing.Point(93, 80);
-            this.buttonProjectRemove.Name = "buttonProjectRemove";
-            this.buttonProjectRemove.Size = new System.Drawing.Size(75, 23);
-            this.buttonProjectRemove.TabIndex = 2;
-            this.buttonProjectRemove.Text = "Remove";
-            this.buttonProjectRemove.UseVisualStyleBackColor = true;
-            this.buttonProjectRemove.Click += new System.EventHandler(this.ButtonProjectRemove_Click);
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Lucida Calligraphy", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(3, 7);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(199, 36);
+            this.lblTitle.TabIndex = 3;
+            this.lblTitle.Text = "Commander";
             // 
-            // labelTitle
+            // lblPojects
             // 
-            this.labelTitle.AutoSize = true;
-            this.labelTitle.Font = new System.Drawing.Font("Lucida Calligraphy", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitle.Location = new System.Drawing.Point(4, 9);
-            this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(242, 43);
-            this.labelTitle.TabIndex = 3;
-            this.labelTitle.Text = "Commander";
+            this.lblPojects.AutoSize = true;
+            this.lblPojects.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPojects.Location = new System.Drawing.Point(5, 42);
+            this.lblPojects.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPojects.Name = "lblPojects";
+            this.lblPojects.Size = new System.Drawing.Size(103, 20);
+            this.lblPojects.TabIndex = 4;
+            this.lblPojects.Text = "Your projects";
             // 
-            // labelPojects
+            // lblCreator
             // 
-            this.labelPojects.AutoSize = true;
-            this.labelPojects.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPojects.Location = new System.Drawing.Point(7, 52);
-            this.labelPojects.Name = "labelPojects";
-            this.labelPojects.Size = new System.Drawing.Size(126, 25);
-            this.labelPojects.TabIndex = 4;
-            this.labelPojects.Text = "Your projects";
+            this.lblCreator.AutoSize = true;
+            this.lblCreator.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreator.Location = new System.Drawing.Point(206, 7);
+            this.lblCreator.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCreator.Name = "lblCreator";
+            this.lblCreator.Size = new System.Drawing.Size(49, 13);
+            this.lblCreator.TabIndex = 5;
+            this.lblCreator.Text = "by: rdxz2";
             // 
-            // labelCreator
+            // lblAppVersion
             // 
-            this.labelCreator.AutoSize = true;
-            this.labelCreator.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCreator.Location = new System.Drawing.Point(715, 11);
-            this.labelCreator.Name = "labelCreator";
-            this.labelCreator.Size = new System.Drawing.Size(65, 17);
-            this.labelCreator.TabIndex = 5;
-            this.labelCreator.Text = "by: rdxz2";
+            this.lblAppVersion.AutoSize = true;
+            this.lblAppVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAppVersion.Location = new System.Drawing.Point(206, 22);
+            this.lblAppVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAppVersion.Name = "lblAppVersion";
+            this.lblAppVersion.Size = new System.Drawing.Size(91, 13);
+            this.lblAppVersion.TabIndex = 6;
+            this.lblAppVersion.Text = "{labelAppVersion}";
             // 
-            // labelAppVersion
+            // dgvProjectScripts
             // 
-            this.labelAppVersion.AutoSize = true;
-            this.labelAppVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelAppVersion.Location = new System.Drawing.Point(715, 28);
-            this.labelAppVersion.Name = "labelAppVersion";
-            this.labelAppVersion.Size = new System.Drawing.Size(121, 17);
-            this.labelAppVersion.TabIndex = 6;
-            this.labelAppVersion.Text = "{labelAppVersion}";
-            // 
-            // dataGridProjectScripts
-            // 
-            this.dataGridProjectScripts.AllowDrop = true;
-            this.dataGridProjectScripts.AllowUserToAddRows = false;
-            this.dataGridProjectScripts.AllowUserToDeleteRows = false;
-            this.dataGridProjectScripts.AutoGenerateColumns = false;
-            this.dataGridProjectScripts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridProjectScripts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvProjectScripts.AllowDrop = true;
+            this.dgvProjectScripts.AllowUserToAddRows = false;
+            this.dgvProjectScripts.AllowUserToDeleteRows = false;
+            this.dgvProjectScripts.AutoGenerateColumns = false;
+            this.dgvProjectScripts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvProjectScripts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameDataGridViewTextBoxColumn,
             this.scriptDataGridViewTextBoxColumn,
+            this.LastExecuted,
             this.Pid});
-            this.dataGridProjectScripts.DataSource = this.projectScriptBindingSource;
-            this.dataGridProjectScripts.Location = new System.Drawing.Point(188, 109);
-            this.dataGridProjectScripts.Name = "dataGridProjectScripts";
-            this.dataGridProjectScripts.ReadOnly = true;
-            this.dataGridProjectScripts.RowTemplate.Height = 24;
-            this.dataGridProjectScripts.Size = new System.Drawing.Size(600, 292);
-            this.dataGridProjectScripts.TabIndex = 7;
-            this.dataGridProjectScripts.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridProjectScripts_CellDoubleClick);
-            this.dataGridProjectScripts.SelectionChanged += new System.EventHandler(this.DataGridProjectScripts_SelectionChanged);
+            this.dgvProjectScripts.DataSource = this.dgvBindsrcProjectScripts;
+            this.dgvProjectScripts.Location = new System.Drawing.Point(141, 65);
+            this.dgvProjectScripts.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvProjectScripts.MultiSelect = false;
+            this.dgvProjectScripts.Name = "dgvProjectScripts";
+            this.dgvProjectScripts.RowTemplate.Height = 24;
+            this.dgvProjectScripts.Size = new System.Drawing.Size(760, 261);
+            this.dgvProjectScripts.TabIndex = 7;
+            this.dgvProjectScripts.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvProjectScripts_CellDoubleClick);
+            this.dgvProjectScripts.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvProjectScripts_CellEndEdit);
+            this.dgvProjectScripts.SelectionChanged += new System.EventHandler(this.DgvProjectScripts_SelectionChanged);
             // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.FillWeight = 150F;
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.nameDataGridViewTextBoxColumn.Width = 150;
             // 
             // scriptDataGridViewTextBoxColumn
             // 
@@ -165,101 +173,125 @@
             this.scriptDataGridViewTextBoxColumn.DataPropertyName = "Script";
             this.scriptDataGridViewTextBoxColumn.HeaderText = "Script";
             this.scriptDataGridViewTextBoxColumn.Name = "scriptDataGridViewTextBoxColumn";
-            this.scriptDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // LastExecuted
+            // 
+            this.LastExecuted.DataPropertyName = "LastExecuted";
+            dataGridViewCellStyle1.Format = "G";
+            dataGridViewCellStyle1.NullValue = null;
+            this.LastExecuted.DefaultCellStyle = dataGridViewCellStyle1;
+            this.LastExecuted.FillWeight = 120F;
+            this.LastExecuted.HeaderText = "LastExecuted";
+            this.LastExecuted.Name = "LastExecuted";
+            this.LastExecuted.ReadOnly = true;
+            this.LastExecuted.Width = 120;
             // 
             // Pid
             // 
             this.Pid.DataPropertyName = "Pid";
+            this.Pid.FillWeight = 70F;
             this.Pid.HeaderText = "Pid";
             this.Pid.Name = "Pid";
             this.Pid.ReadOnly = true;
+            this.Pid.Width = 70;
             // 
-            // projectScriptBindingSource
+            // dgvBindsrcProjectScripts
             // 
-            this.projectScriptBindingSource.DataSource = typeof(commander.ViewModels.VMHome.ProjectScript);
+            this.dgvBindsrcProjectScripts.DataSource = typeof(commander.ViewModels.VMHome.ProjectScript);
             // 
             // notifyIcon1
             // 
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // buttonProjectScriptAdd
+            // btnProjectScriptAdd
             // 
-            this.buttonProjectScriptAdd.Location = new System.Drawing.Point(188, 80);
-            this.buttonProjectScriptAdd.Name = "buttonProjectScriptAdd";
-            this.buttonProjectScriptAdd.Size = new System.Drawing.Size(75, 23);
-            this.buttonProjectScriptAdd.TabIndex = 8;
-            this.buttonProjectScriptAdd.Text = "Add";
-            this.buttonProjectScriptAdd.UseVisualStyleBackColor = true;
-            this.buttonProjectScriptAdd.Click += new System.EventHandler(this.ButtonProjectScriptAdd_Click);
+            this.btnProjectScriptAdd.Location = new System.Drawing.Point(785, 42);
+            this.btnProjectScriptAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProjectScriptAdd.Name = "btnProjectScriptAdd";
+            this.btnProjectScriptAdd.Size = new System.Drawing.Size(56, 19);
+            this.btnProjectScriptAdd.TabIndex = 8;
+            this.btnProjectScriptAdd.Text = "Add";
+            this.btnProjectScriptAdd.UseVisualStyleBackColor = true;
+            this.btnProjectScriptAdd.Click += new System.EventHandler(this.BtnProjectScriptAdd_Click);
             // 
-            // buttonProjectScriptRemove
+            // btnProjectScriptRemove
             // 
-            this.buttonProjectScriptRemove.Enabled = false;
-            this.buttonProjectScriptRemove.Location = new System.Drawing.Point(269, 80);
-            this.buttonProjectScriptRemove.Name = "buttonProjectScriptRemove";
-            this.buttonProjectScriptRemove.Size = new System.Drawing.Size(75, 23);
-            this.buttonProjectScriptRemove.TabIndex = 9;
-            this.buttonProjectScriptRemove.Text = "Remove";
-            this.buttonProjectScriptRemove.UseVisualStyleBackColor = true;
-            this.buttonProjectScriptRemove.Click += new System.EventHandler(this.ButtonProjectScriptRemove_Click);
+            this.btnProjectScriptRemove.Enabled = false;
+            this.btnProjectScriptRemove.Location = new System.Drawing.Point(845, 42);
+            this.btnProjectScriptRemove.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProjectScriptRemove.Name = "btnProjectScriptRemove";
+            this.btnProjectScriptRemove.Size = new System.Drawing.Size(56, 19);
+            this.btnProjectScriptRemove.TabIndex = 9;
+            this.btnProjectScriptRemove.Text = "Remove";
+            this.btnProjectScriptRemove.UseVisualStyleBackColor = true;
+            this.btnProjectScriptRemove.Click += new System.EventHandler(this.BtnProjectScriptRemove_Click);
             // 
-            // labelProjectScripts
+            // lblProjectScripts
             // 
-            this.labelProjectScripts.AutoSize = true;
-            this.labelProjectScripts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelProjectScripts.Location = new System.Drawing.Point(183, 52);
-            this.labelProjectScripts.Name = "labelProjectScripts";
-            this.labelProjectScripts.Size = new System.Drawing.Size(187, 25);
-            this.labelProjectScripts.TabIndex = 10;
-            this.labelProjectScripts.Text = "{labelProjectScripts}";
+            this.lblProjectScripts.AutoSize = true;
+            this.lblProjectScripts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProjectScripts.Location = new System.Drawing.Point(137, 42);
+            this.lblProjectScripts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblProjectScripts.Name = "lblProjectScripts";
+            this.lblProjectScripts.Size = new System.Drawing.Size(150, 20);
+            this.lblProjectScripts.TabIndex = 10;
+            this.lblProjectScripts.Text = "{labelProjectScripts}";
             // 
-            // buttonInfo
+            // btnInfo
             // 
-            this.buttonInfo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonInfo.BackgroundImage")));
-            this.buttonInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonInfo.Location = new System.Drawing.Point(718, 71);
-            this.buttonInfo.Name = "buttonInfo";
-            this.buttonInfo.Size = new System.Drawing.Size(32, 32);
-            this.buttonInfo.TabIndex = 11;
-            this.buttonInfo.UseVisualStyleBackColor = true;
+            this.btnInfo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInfo.BackgroundImage")));
+            this.btnInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnInfo.Location = new System.Drawing.Point(849, 7);
+            this.btnInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(24, 26);
+            this.btnInfo.TabIndex = 11;
+            this.btnInfo.UseVisualStyleBackColor = true;
             // 
-            // buttonSettings
+            // btnSettings
             // 
-            this.buttonSettings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonSettings.BackgroundImage")));
-            this.buttonSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonSettings.Location = new System.Drawing.Point(756, 71);
-            this.buttonSettings.Name = "buttonSettings";
-            this.buttonSettings.Size = new System.Drawing.Size(32, 32);
-            this.buttonSettings.TabIndex = 12;
-            this.buttonSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSettings.BackgroundImage")));
+            this.btnSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSettings.Location = new System.Drawing.Point(877, 7);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(24, 26);
+            this.btnSettings.TabIndex = 12;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            // 
+            // projectBindingSource
+            // 
+            this.projectBindingSource.DataSource = typeof(commander.ViewModels.VMHome.Project);
             // 
             // FrHome
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 413);
-            this.Controls.Add(this.buttonSettings);
-            this.Controls.Add(this.buttonInfo);
-            this.Controls.Add(this.labelProjectScripts);
-            this.Controls.Add(this.buttonProjectScriptRemove);
-            this.Controls.Add(this.buttonProjectScriptAdd);
-            this.Controls.Add(this.dataGridProjectScripts);
-            this.Controls.Add(this.labelAppVersion);
-            this.Controls.Add(this.labelCreator);
-            this.Controls.Add(this.labelPojects);
-            this.Controls.Add(this.labelTitle);
-            this.Controls.Add(this.buttonProjectRemove);
-            this.Controls.Add(this.buttonProjectAdd);
-            this.Controls.Add(this.listBoxProjects);
+            this.ClientSize = new System.Drawing.Size(912, 336);
+            this.Controls.Add(this.btnSettings);
+            this.Controls.Add(this.btnInfo);
+            this.Controls.Add(this.lblProjectScripts);
+            this.Controls.Add(this.btnProjectScriptRemove);
+            this.Controls.Add(this.btnProjectScriptAdd);
+            this.Controls.Add(this.dgvProjectScripts);
+            this.Controls.Add(this.lblAppVersion);
+            this.Controls.Add(this.lblCreator);
+            this.Controls.Add(this.lblPojects);
+            this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.btnProjectRemove);
+            this.Controls.Add(this.btnProjectAdd);
+            this.Controls.Add(this.lbxProjects);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "FrHome";
             this.Text = "Commander by: rdxz2";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.FrHome_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProjectScripts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBindsrcProjectScripts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.projectBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridProjectScripts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.projectScriptBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,24 +299,25 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBoxProjects;
-        private System.Windows.Forms.Button buttonProjectAdd;
-        private System.Windows.Forms.Button buttonProjectRemove;
-        private System.Windows.Forms.Label labelTitle;
-        private System.Windows.Forms.Label labelPojects;
-        private System.Windows.Forms.Label labelCreator;
-        private System.Windows.Forms.Label labelAppVersion;
-        private System.Windows.Forms.BindingSource projectBindingSource;
-        private System.Windows.Forms.DataGridView dataGridProjectScripts;
-        private System.Windows.Forms.BindingSource projectScriptBindingSource;
+        private System.Windows.Forms.ListBox lbxProjects;
+        private System.Windows.Forms.Button btnProjectAdd;
+        private System.Windows.Forms.Button btnProjectRemove;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblPojects;
+        private System.Windows.Forms.Label lblCreator;
+        private System.Windows.Forms.Label lblAppVersion;
+        private System.Windows.Forms.DataGridView dgvProjectScripts;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.Button buttonProjectScriptAdd;
-        private System.Windows.Forms.Button buttonProjectScriptRemove;
-        private System.Windows.Forms.Label labelProjectScripts;
-        private System.Windows.Forms.Button buttonInfo;
-        private System.Windows.Forms.Button buttonSettings;
+        private System.Windows.Forms.Button btnProjectScriptAdd;
+        private System.Windows.Forms.Button btnProjectScriptRemove;
+        private System.Windows.Forms.Label lblProjectScripts;
+        private System.Windows.Forms.Button btnInfo;
+        private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn scriptDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LastExecuted;
         private System.Windows.Forms.DataGridViewTextBoxColumn Pid;
+        private System.Windows.Forms.BindingSource dgvBindsrcProjectScripts;
+        private System.Windows.Forms.BindingSource projectBindingSource;
     }
 }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxName = new System.Windows.Forms.TextBox();
+            this.tbxName = new System.Windows.Forms.TextBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonSubmit = new System.Windows.Forms.Button();
             this.labelName = new System.Windows.Forms.Label();
@@ -36,11 +36,11 @@
             // 
             // textBoxName
             // 
-            this.textBoxName.Location = new System.Drawing.Point(12, 47);
-            this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(251, 22);
-            this.textBoxName.TabIndex = 0;
-            this.textBoxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBoxName_KeyPress);
+            this.tbxName.Location = new System.Drawing.Point(12, 47);
+            this.tbxName.Name = "textBoxName";
+            this.tbxName.Size = new System.Drawing.Size(251, 22);
+            this.tbxName.TabIndex = 0;
+            this.tbxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TbxName_KeyPress);
             // 
             // buttonCancel
             // 
@@ -50,7 +50,7 @@
             this.buttonCancel.TabIndex = 1;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
+            this.buttonCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // buttonSubmit
             // 
@@ -60,7 +60,7 @@
             this.buttonSubmit.TabIndex = 2;
             this.buttonSubmit.Text = "Save";
             this.buttonSubmit.UseVisualStyleBackColor = true;
-            this.buttonSubmit.Click += new System.EventHandler(this.ButtonSubmit_Click);
+            this.buttonSubmit.Click += new System.EventHandler(this.BtnSubmit_Click);
             // 
             // labelName
             // 
@@ -79,7 +79,7 @@
             this.Controls.Add(this.labelName);
             this.Controls.Add(this.buttonSubmit);
             this.Controls.Add(this.buttonCancel);
-            this.Controls.Add(this.textBoxName);
+            this.Controls.Add(this.tbxName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -93,7 +93,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxName;
+        private System.Windows.Forms.TextBox tbxName;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonSubmit;
         private System.Windows.Forms.Label labelName;

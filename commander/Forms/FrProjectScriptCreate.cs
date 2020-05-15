@@ -8,8 +8,8 @@ namespace commander.Forms
     {
         private readonly VMHome.Project project;
 
-        public string TextBoxNameValue;
-        public string TextBoxScriptValue;
+        public string TbxNameValue;
+        public string TbxScriptValue;
 
         public FrProjectScriptCreate(VMHome.Project project)
         {
@@ -28,12 +28,12 @@ namespace commander.Forms
 
         //START -- BUTTONS
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             HandleCancel();
         }
 
-        private void ButtonSubmit_Click(object sender, EventArgs e)
+        private void BtnSubmit_Click(object sender, EventArgs e)
         {
             HandleSubmit();
         }
@@ -45,8 +45,8 @@ namespace commander.Forms
         private void HandleSubmit()
         {
             //set internal value
-            TextBoxNameValue = textBoxName.Text;
-            TextBoxScriptValue = textBoxScript.Text;
+            TbxNameValue = tbxName.Text;
+            TbxScriptValue = tbxScript.Text;
 
             //set ok dialog result
             DialogResult = DialogResult.OK;

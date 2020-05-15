@@ -21,8 +21,10 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id_project" Type="int" Nullable="false" />
+          <Property Name="order" Type="int" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="path" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="script" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="last_executed" Type="datetime" Precision="0" />
           <Property Name="cd" Type="datetime" Precision="0" Nullable="false" />
         </EntityType>
         <Association Name="fk_script_project_idproject">
@@ -74,8 +76,10 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="id_project" Type="Int32" Nullable="false" />
+          <Property Name="order" Type="Int32" Nullable="false" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="path" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="script" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="last_executed" Type="DateTime" />
           <Property Name="cd" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="project" Relationship="MdlCommander.fk_script_project_idproject" FromRole="project_script" ToRole="project" />
         </EntityType>
@@ -112,8 +116,10 @@
             <EntityTypeMapping TypeName="MdlCommander.project_script">
               <MappingFragment StoreEntitySet="project_script">
                 <ScalarProperty Name="cd" ColumnName="cd" />
-                <ScalarProperty Name="path" ColumnName="path" />
+                <ScalarProperty Name="last_executed" ColumnName="last_executed" />
+                <ScalarProperty Name="script" ColumnName="script" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="order" ColumnName="order" />
                 <ScalarProperty Name="id_project" ColumnName="id_project" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
