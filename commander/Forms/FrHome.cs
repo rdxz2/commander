@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,12 +17,12 @@ namespace commander.Forms
     public partial class FrHome : Form
     {
         //db entity
-        private readonly EttCommander ettCommander;
+        private readonly EttCommander _ettCommander;
 
         //utilites
-        private readonly UtlFile utlFile;
+        private readonly UtlFile _utlFile;
 
-        private string applicationPath;
+        private string _applicationPath;
 
 
         public FrHome()
@@ -29,13 +30,13 @@ namespace commander.Forms
             InitializeComponent();
 
             //initialize db entity
-            ettCommander = new EttCommander();
+            _ettCommander = new EttCommander();
 
             //initialize utilities
-            utlFile = new UtlFile();
+            _utlFile = new UtlFile();
 
             //get application base path
-            applicationPath = AppDomain.CurrentDomain.BaseDirectory;
+            _applicationPath = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         private void FrHome_Load(object sender, EventArgs e)
@@ -71,10 +72,10 @@ namespace commander.Forms
                 };
 
                 //insert model
-                ettCommander.projects.Add(tbiProject);
+                _ettCommander.projects.Add(tbiProject);
 
                 //commit
-                ettCommander.SaveChanges();
+                _ettCommander.SaveChanges();
 
                 //repopulate project list box
                 LbxProjects_Populate();
@@ -87,7 +88,7 @@ namespace commander.Forms
             VMHome.Project lbxProjectsSelectedItem = LbxProjects_GetSelectedItem();
 
             //get selected project's entity from database
-            project repoProject = ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
+            project repoProject = _ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
 
             //make sure data is exist in database
             if (repoProject == null)
@@ -102,7 +103,7 @@ namespace commander.Forms
             repoProject.is_active = false;
 
             //commit
-            ettCommander.SaveChanges();
+            _ettCommander.SaveChanges();
 
             //reload list box
             LbxProjects_Populate();
@@ -122,7 +123,7 @@ namespace commander.Forms
                 if (result != DialogResult.OK) return;
 
                 //get selected projcet's entity from database
-                project tbuProject = ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
+                project tbuProject = _ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
 
                 //make sure data is exist in database
                 if (tbuProject == null)
@@ -145,7 +146,7 @@ namespace commander.Forms
                 tbuProject.ud = DateTime.Now;
 
                 //commit
-                ettCommander.SaveChanges();
+                _ettCommander.SaveChanges();
 
                 //create file with the script
 
@@ -164,7 +165,7 @@ namespace commander.Forms
             if (dgvProjectScriptsSelectedRow == null) return;
 
             //get selected row's entity from databsae
-            project_script repoProjectScript = ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
+            project_script repoProjectScript = _ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
 
             //make sure data is exist in database
             if (repoProjectScript == null)
@@ -175,10 +176,10 @@ namespace commander.Forms
             }
 
             //delete
-            ettCommander.project_script.Remove(repoProjectScript);
+            _ettCommander.project_script.Remove(repoProjectScript);
 
             //commit
-            ettCommander.SaveChanges();
+            _ettCommander.SaveChanges();
 
             //reload data grid
             DgvProjectScripts_Populate();
@@ -206,7 +207,7 @@ namespace commander.Forms
 
         private void LbxProjects_Populate()
         {
-            var repoProjects = ettCommander.projects
+            var repoProjects = _ettCommander.projects
                 .Where(m => m.is_active)
                 .ToList();
 
@@ -268,7 +269,7 @@ namespace commander.Forms
             if (!isProjectFound) return;
 
             //get selected project
-            var project = ettCommander.projects.SingleOrDefault(m => m.is_active && m.id == lbxProjectsSelectedItem.Id);
+            var project = _ettCommander.projects.SingleOrDefault(m => m.is_active && m.id == lbxProjectsSelectedItem.Id);
             if (project == null) return;
 
             //set project script label
@@ -277,6 +278,7 @@ namespace commander.Forms
             //create binding list
             BindingList<VMHome.ProjectScript> bindingProjectScripts = new BindingList<VMHome.ProjectScript>();
             project.project_script
+                .OrderBy(m => m.order)
                 .Select(m =>
                     VMHome.ProjectScript.CreateNew(m.id, m.name, m.script, m.last_executed)
                 )
@@ -309,7 +311,7 @@ namespace commander.Forms
             }
 
             //get selected script entity's from database
-            var repoProjectScript = ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
+            var repoProjectScript = _ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
 
             //make sure data is exist in database
             if (repoProjectScript == null)
@@ -323,7 +325,7 @@ namespace commander.Forms
 
             //create temporary file
             string filePath = CombineScriptDirectoryWithFileName(CombineProjectNameWithScriptName(repoProjectScript.project.name, repoProjectScript.name));
-            bool isCreatingFileSuccess = utlFile.CreateAndWrite(filePath, repoProjectScript.script);
+            bool isCreatingFileSuccess = _utlFile.CreateAndWrite(filePath, repoProjectScript.script);
             if (!isCreatingFileSuccess)
             {
                 MessageBox.Show("failed creating temporary comand file");
@@ -355,7 +357,7 @@ namespace commander.Forms
                 dgvProjectScriptsSelectedRow.Pid = null;
 
                 //delete temporary file
-                utlFile.Delete(filePath);
+                _utlFile.Delete(filePath);
             };
 
             //start process
@@ -371,7 +373,7 @@ namespace commander.Forms
             repoProjectScript.last_executed = now;
 
             //commit
-            ettCommander.SaveChanges();
+            _ettCommander.SaveChanges();
         }
 
         private void DgvProjectScripts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -385,7 +387,7 @@ namespace commander.Forms
             if (dgvProjectScriptsSelectedRow == null) return;
 
             //get selected script entity's from database
-            var repoProjectScript = ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
+            var repoProjectScript = _ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
 
             //make sure data is exist in database
             if (repoProjectScript == null)
@@ -400,17 +402,139 @@ namespace commander.Forms
             repoProjectScript.script = dgvProjectScriptsSelectedRow.Script;
 
             //commit
-            ettCommander.SaveChanges();
+            _ettCommander.SaveChanges();
 
             //reload project script data grid
             DgvProjectScripts_Populate();
         }
 
+        //START -- DGV PROJECT SCRIPT DRAG AND DROP
+
+        //double click helper properties
+        //these properties is used to prevent conflict between double click and drag and drop
+        private bool _isDragging;
+        private Point _clickPoint;
+
+        //drag and drop helper properties
+        private int _dgvProjectScriptDragRow = -1;
+        private Label _dgvProjectScriptDragLabel = null;
+
+        private void DgvProjectScripts_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
+                _dgvProjectScriptDragRow = e.RowIndex;
+                if (_dgvProjectScriptDragLabel == null) _dgvProjectScriptDragLabel = new Label();
+                _dgvProjectScriptDragLabel.Text = dgvProjectScripts[e.ColumnIndex, e.RowIndex].Value.ToString();
+                _dgvProjectScriptDragLabel.Parent = dgvProjectScripts;
+                _dgvProjectScriptDragLabel.Location = e.Location;
+            }
+        }
+
+        private void DgvProjectScripts_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && _dgvProjectScriptDragLabel != null)
+            {
+                _dgvProjectScriptDragLabel.Location = e.Location;
+                dgvProjectScripts.ClearSelection();
+            }
+        }
+
+        private void DgvProjectScripts_MouseUp(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                var hit = dgvProjectScripts.HitTest(e.X, e.Y);
+                int dropRow = -1;
+                if (hit.Type != DataGridViewHitTestType.None)
+                {
+                    dropRow = hit.RowIndex;
+                    if (_dgvProjectScriptDragRow >= 0)
+                    {
+                        int tgtRow = dropRow + (_dgvProjectScriptDragRow > dropRow ? 1 : 0);
+                        if (tgtRow != _dgvProjectScriptDragRow)
+                        {
+
+                            //START -- MOVE DATA SOURCE
+
+                            var currentSelectedBindingSource = (VMHome.ProjectScript)dgvBindsrcProjectScripts.Current;
+
+                            var oldValue = currentSelectedBindingSource;
+
+                            var newValue = currentSelectedBindingSource;
+
+                            dgvBindsrcProjectScripts.Remove(oldValue);
+
+                            dgvBindsrcProjectScripts.Insert(tgtRow, newValue);
+
+                            //END -- MOVE DATA SOURCE
+
+                            //DataRow dtRow = dataTable.Rows[DgvProjectScriptDragRow];
+                            //DataRow newRow = dataTable.NewRow();
+                            //newRow.ItemArray = dataTable.Rows[DgvProjectScriptDragRow].ItemArray; // we need to clone the values
+
+                            //dataTable.Rows.Remove(dtRow);
+                            //dataTable.Rows.InsertAt(newRow, tgtRow);
+
+                            //dgvProjectScripts.Refresh();
+                            dgvProjectScripts.Rows[tgtRow].Selected = true;
+
+                            //START -- CHANGE SCRIPT ORDER IN DATABASE
+
+                            //get selected project from listbox
+                            VMHome.Project lbxProjectsSelectedItem = LbxProjects_GetSelectedItem();
+
+                            //get selected project from database
+                            var repoProject = _ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
+
+                            //make sure data is exist in database
+                            if (repoProject == null)
+                            {
+                                MessageBox.Show($"project '{lbxProjectsSelectedItem.Name}' not found in database");
+
+                                return;
+                            }
+
+                            //update all  scripts order
+                            var repoProjectScripts = repoProject.project_script;
+
+                            //order counter
+                            int order = 0;
+
+                            foreach (VMHome.ProjectScript script in dgvBindsrcProjectScripts)
+                            {
+                                //get one from database
+                                var repoProjectScript = repoProjectScripts.Single(m => m.id == script.Id);
+
+                                //update database order
+                                repoProjectScript.order = ++order;
+                            }
+
+                            //commit
+                            _ettCommander.SaveChanges();
+
+                            //END -- CHANGE SCRIPT ORDER IN DATABASE
+                        }
+                    }
+                }
+                else { dgvProjectScripts.Rows[_dgvProjectScriptDragRow].Selected = true; }
+
+                if (_dgvProjectScriptDragLabel != null)
+                {
+                    _dgvProjectScriptDragLabel.Dispose();
+                    _dgvProjectScriptDragLabel = null;
+                }
+            }
+        }
+
+        //END-- DGV PROJECT SCRIPT DRAG AND DROP
+
         //END -- DATA GRIDS
 
         //START -- HELPERS
 
-        private string CombineScriptDirectoryWithFileName(string databasePath) => Path.Combine(applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, databasePath);
+        private string CombineScriptDirectoryWithFileName(string databasePath) => Path.Combine(_applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, databasePath);
 
         private string CombineProjectNameWithScriptName(string projectName, string scriptName) => $"{projectName} {scriptName}.{CNSTSTRING.FILEEXTENSION_CMD}".Replace(" ", "_");
 

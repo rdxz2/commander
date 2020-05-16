@@ -34,10 +34,10 @@
             this.labelName = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // textBoxName
+            // tbxName
             // 
             this.tbxName.Location = new System.Drawing.Point(12, 47);
-            this.tbxName.Name = "textBoxName";
+            this.tbxName.Name = "tbxName";
             this.tbxName.Size = new System.Drawing.Size(251, 22);
             this.tbxName.TabIndex = 0;
             this.tbxName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TbxName_KeyPress);

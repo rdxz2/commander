@@ -32,6 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrHome));
             this.lbxProjects = new System.Windows.Forms.ListBox();
+            this.bindsrcProject = new System.Windows.Forms.BindingSource(this.components);
             this.btnProjectAdd = new System.Windows.Forms.Button();
             this.btnProjectRemove = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -50,30 +51,34 @@
             this.lblProjectScripts = new System.Windows.Forms.Label();
             this.btnInfo = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
-            this.projectBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.bindsrcProject)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProjectScripts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBindsrcProjectScripts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.projectBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lbxProjects
             // 
-            this.lbxProjects.DataSource = this.projectBindingSource;
+            this.lbxProjects.DataSource = this.bindsrcProject;
             this.lbxProjects.DisplayMember = "Name";
             this.lbxProjects.FormattingEnabled = true;
-            this.lbxProjects.Location = new System.Drawing.Point(9, 89);
-            this.lbxProjects.Margin = new System.Windows.Forms.Padding(2);
+            this.lbxProjects.ItemHeight = 16;
+            this.lbxProjects.Location = new System.Drawing.Point(12, 110);
+            this.lbxProjects.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lbxProjects.Name = "lbxProjects";
-            this.lbxProjects.Size = new System.Drawing.Size(117, 238);
+            this.lbxProjects.Size = new System.Drawing.Size(155, 292);
             this.lbxProjects.TabIndex = 0;
             this.lbxProjects.SelectedIndexChanged += new System.EventHandler(this.LbxProjects_SelectedIndexChanged);
             // 
+            // bindsrcProject
+            // 
+            this.bindsrcProject.DataSource = typeof(commander.ViewModels.VMHome.Project);
+            // 
             // btnProjectAdd
             // 
-            this.btnProjectAdd.Location = new System.Drawing.Point(9, 65);
-            this.btnProjectAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProjectAdd.Location = new System.Drawing.Point(12, 80);
+            this.btnProjectAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnProjectAdd.Name = "btnProjectAdd";
-            this.btnProjectAdd.Size = new System.Drawing.Size(56, 19);
+            this.btnProjectAdd.Size = new System.Drawing.Size(75, 23);
             this.btnProjectAdd.TabIndex = 1;
             this.btnProjectAdd.Text = "Add";
             this.btnProjectAdd.UseVisualStyleBackColor = true;
@@ -82,10 +87,10 @@
             // btnProjectRemove
             // 
             this.btnProjectRemove.Enabled = false;
-            this.btnProjectRemove.Location = new System.Drawing.Point(70, 65);
-            this.btnProjectRemove.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProjectRemove.Location = new System.Drawing.Point(93, 80);
+            this.btnProjectRemove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnProjectRemove.Name = "btnProjectRemove";
-            this.btnProjectRemove.Size = new System.Drawing.Size(56, 19);
+            this.btnProjectRemove.Size = new System.Drawing.Size(75, 23);
             this.btnProjectRemove.TabIndex = 2;
             this.btnProjectRemove.Text = "Remove";
             this.btnProjectRemove.UseVisualStyleBackColor = true;
@@ -95,10 +100,9 @@
             // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Lucida Calligraphy", 19.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(3, 7);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTitle.Location = new System.Drawing.Point(4, 9);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(199, 36);
+            this.lblTitle.Size = new System.Drawing.Size(242, 43);
             this.lblTitle.TabIndex = 3;
             this.lblTitle.Text = "Commander";
             // 
@@ -106,10 +110,9 @@
             // 
             this.lblPojects.AutoSize = true;
             this.lblPojects.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPojects.Location = new System.Drawing.Point(5, 42);
-            this.lblPojects.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPojects.Location = new System.Drawing.Point(7, 52);
             this.lblPojects.Name = "lblPojects";
-            this.lblPojects.Size = new System.Drawing.Size(103, 20);
+            this.lblPojects.Size = new System.Drawing.Size(126, 25);
             this.lblPojects.TabIndex = 4;
             this.lblPojects.Text = "Your projects";
             // 
@@ -117,10 +120,9 @@
             // 
             this.lblCreator.AutoSize = true;
             this.lblCreator.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCreator.Location = new System.Drawing.Point(206, 7);
-            this.lblCreator.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblCreator.Location = new System.Drawing.Point(275, 9);
             this.lblCreator.Name = "lblCreator";
-            this.lblCreator.Size = new System.Drawing.Size(49, 13);
+            this.lblCreator.Size = new System.Drawing.Size(65, 17);
             this.lblCreator.TabIndex = 5;
             this.lblCreator.Text = "by: rdxz2";
             // 
@@ -128,10 +130,9 @@
             // 
             this.lblAppVersion.AutoSize = true;
             this.lblAppVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAppVersion.Location = new System.Drawing.Point(206, 22);
-            this.lblAppVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAppVersion.Location = new System.Drawing.Point(275, 27);
             this.lblAppVersion.Name = "lblAppVersion";
-            this.lblAppVersion.Size = new System.Drawing.Size(91, 13);
+            this.lblAppVersion.Size = new System.Drawing.Size(121, 17);
             this.lblAppVersion.TabIndex = 6;
             this.lblAppVersion.Text = "{labelAppVersion}";
             // 
@@ -148,16 +149,19 @@
             this.LastExecuted,
             this.Pid});
             this.dgvProjectScripts.DataSource = this.dgvBindsrcProjectScripts;
-            this.dgvProjectScripts.Location = new System.Drawing.Point(141, 65);
-            this.dgvProjectScripts.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvProjectScripts.Location = new System.Drawing.Point(188, 80);
+            this.dgvProjectScripts.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvProjectScripts.MultiSelect = false;
             this.dgvProjectScripts.Name = "dgvProjectScripts";
             this.dgvProjectScripts.RowTemplate.Height = 24;
-            this.dgvProjectScripts.Size = new System.Drawing.Size(760, 261);
+            this.dgvProjectScripts.Size = new System.Drawing.Size(1013, 321);
             this.dgvProjectScripts.TabIndex = 7;
             this.dgvProjectScripts.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvProjectScripts_CellDoubleClick);
             this.dgvProjectScripts.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvProjectScripts_CellEndEdit);
+            this.dgvProjectScripts.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DgvProjectScripts_CellMouseDown);
             this.dgvProjectScripts.SelectionChanged += new System.EventHandler(this.DgvProjectScripts_SelectionChanged);
+            this.dgvProjectScripts.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DgvProjectScripts_MouseMove);
+            this.dgvProjectScripts.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DgvProjectScripts_MouseUp);
             // 
             // nameDataGridViewTextBoxColumn
             // 
@@ -206,10 +210,10 @@
             // 
             // btnProjectScriptAdd
             // 
-            this.btnProjectScriptAdd.Location = new System.Drawing.Point(785, 42);
-            this.btnProjectScriptAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProjectScriptAdd.Location = new System.Drawing.Point(1047, 52);
+            this.btnProjectScriptAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnProjectScriptAdd.Name = "btnProjectScriptAdd";
-            this.btnProjectScriptAdd.Size = new System.Drawing.Size(56, 19);
+            this.btnProjectScriptAdd.Size = new System.Drawing.Size(75, 23);
             this.btnProjectScriptAdd.TabIndex = 8;
             this.btnProjectScriptAdd.Text = "Add";
             this.btnProjectScriptAdd.UseVisualStyleBackColor = true;
@@ -218,10 +222,10 @@
             // btnProjectScriptRemove
             // 
             this.btnProjectScriptRemove.Enabled = false;
-            this.btnProjectScriptRemove.Location = new System.Drawing.Point(845, 42);
-            this.btnProjectScriptRemove.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProjectScriptRemove.Location = new System.Drawing.Point(1127, 52);
+            this.btnProjectScriptRemove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnProjectScriptRemove.Name = "btnProjectScriptRemove";
-            this.btnProjectScriptRemove.Size = new System.Drawing.Size(56, 19);
+            this.btnProjectScriptRemove.Size = new System.Drawing.Size(75, 23);
             this.btnProjectScriptRemove.TabIndex = 9;
             this.btnProjectScriptRemove.Text = "Remove";
             this.btnProjectScriptRemove.UseVisualStyleBackColor = true;
@@ -231,10 +235,9 @@
             // 
             this.lblProjectScripts.AutoSize = true;
             this.lblProjectScripts.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProjectScripts.Location = new System.Drawing.Point(137, 42);
-            this.lblProjectScripts.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblProjectScripts.Location = new System.Drawing.Point(183, 52);
             this.lblProjectScripts.Name = "lblProjectScripts";
-            this.lblProjectScripts.Size = new System.Drawing.Size(150, 20);
+            this.lblProjectScripts.Size = new System.Drawing.Size(187, 25);
             this.lblProjectScripts.TabIndex = 10;
             this.lblProjectScripts.Text = "{labelProjectScripts}";
             // 
@@ -242,10 +245,10 @@
             // 
             this.btnInfo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInfo.BackgroundImage")));
             this.btnInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnInfo.Location = new System.Drawing.Point(849, 7);
-            this.btnInfo.Margin = new System.Windows.Forms.Padding(2);
+            this.btnInfo.Location = new System.Drawing.Point(1132, 9);
+            this.btnInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(24, 26);
+            this.btnInfo.Size = new System.Drawing.Size(32, 32);
             this.btnInfo.TabIndex = 11;
             this.btnInfo.UseVisualStyleBackColor = true;
             // 
@@ -253,22 +256,18 @@
             // 
             this.btnSettings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSettings.BackgroundImage")));
             this.btnSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnSettings.Location = new System.Drawing.Point(877, 7);
-            this.btnSettings.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSettings.Location = new System.Drawing.Point(1169, 9);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(24, 26);
+            this.btnSettings.Size = new System.Drawing.Size(32, 32);
             this.btnSettings.TabIndex = 12;
             this.btnSettings.UseVisualStyleBackColor = true;
             // 
-            // projectBindingSource
-            // 
-            this.projectBindingSource.DataSource = typeof(commander.ViewModels.VMHome.Project);
-            // 
             // FrHome
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(912, 336);
+            this.ClientSize = new System.Drawing.Size(1216, 414);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnInfo);
             this.Controls.Add(this.lblProjectScripts);
@@ -283,15 +282,14 @@
             this.Controls.Add(this.btnProjectAdd);
             this.Controls.Add(this.lbxProjects);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.Name = "FrHome";
             this.Text = "Commander by: rdxz2";
-            this.TopMost = true;
             this.Load += new System.EventHandler(this.FrHome_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.bindsrcProject)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProjectScripts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBindsrcProjectScripts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.projectBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -318,6 +316,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn LastExecuted;
         private System.Windows.Forms.DataGridViewTextBoxColumn Pid;
         private System.Windows.Forms.BindingSource dgvBindsrcProjectScripts;
-        private System.Windows.Forms.BindingSource projectBindingSource;
+        private System.Windows.Forms.BindingSource bindsrcProject;
     }
 }

@@ -16,6 +16,8 @@ namespace commander.ViewModels
         {
             //START -- PRIVATE PROPERTIES
 
+            private string  ValueName = null;
+            private string  ValueScript = null;
             private int? ValuePid = null;
 
             private DateTime? ValueLastExecuted = null;
@@ -26,9 +28,37 @@ namespace commander.ViewModels
 
             public int Id { get; set; } = 0;
 
-            public string Name { get; set; } = string.Empty;
+            public string Name
+            {
+                get
+                {
+                    return ValueName;
+                }
+                set
+                {
+                    if (value != ValueName)
+                    {
+                        ValueName = value;
+                        NotifyPropertyChanged();
+                    }
+                }
+            }
 
-            public string Script { get; set; } = string.Empty;
+            public string Script
+            {
+                get
+                {
+                    return ValueScript;
+                }
+                set
+                {
+                    if (value != ValueScript)
+                    {
+                        ValueScript = value;
+                        NotifyPropertyChanged();
+                    }
+                }
+            }
 
             public int? Pid
             {
@@ -68,9 +98,9 @@ namespace commander.ViewModels
             private ProjectScript(int Id, string Name, string Script, DateTime? LastExecuted)
             {
                 this.Id = Id;
-                this.Name = Name;
-                this.Script = Script;
 
+                ValueName = Name;
+                ValueScript = Script;
                 ValueLastExecuted = LastExecuted;
             }
 

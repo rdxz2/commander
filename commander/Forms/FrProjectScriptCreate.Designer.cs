@@ -36,53 +36,53 @@
             this.btnSubmit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // labelName
+            // lblName
             // 
             this.lblName.AutoSize = true;
             this.lblName.Location = new System.Drawing.Point(12, 9);
-            this.lblName.Name = "labelName";
+            this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(83, 17);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "Script name";
             // 
-            // textBoxName
+            // tbxName
             // 
             this.tbxName.Location = new System.Drawing.Point(15, 29);
-            this.tbxName.Name = "textBoxName";
+            this.tbxName.Name = "tbxName";
             this.tbxName.Size = new System.Drawing.Size(280, 22);
             this.tbxName.TabIndex = 1;
             // 
-            // textBoxScript
+            // tbxScript
             // 
             this.tbxScript.Location = new System.Drawing.Point(15, 74);
             this.tbxScript.Multiline = true;
-            this.tbxScript.Name = "textBoxScript";
+            this.tbxScript.Name = "tbxScript";
             this.tbxScript.Size = new System.Drawing.Size(280, 86);
             this.tbxScript.TabIndex = 2;
             // 
-            // labelScript
+            // lblScript
             // 
             this.lblScript.AutoSize = true;
             this.lblScript.Location = new System.Drawing.Point(12, 54);
-            this.lblScript.Name = "labelScript";
+            this.lblScript.Name = "lblScript";
             this.lblScript.Size = new System.Drawing.Size(44, 17);
             this.lblScript.TabIndex = 3;
             this.lblScript.Text = "Script";
             // 
-            // buttonCancel
+            // btnCancel
             // 
             this.btnCancel.Location = new System.Drawing.Point(15, 166);
-            this.btnCancel.Name = "buttonCancel";
+            this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(135, 23);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
-            // buttonSubmit
+            // btnSubmit
             // 
             this.btnSubmit.Location = new System.Drawing.Point(160, 166);
-            this.btnSubmit.Name = "buttonSubmit";
+            this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(135, 23);
             this.btnSubmit.TabIndex = 5;
             this.btnSubmit.Text = "Save";
