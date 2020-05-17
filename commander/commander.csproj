@@ -27,7 +27,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -100,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\CNSTSTRING.cs" />
+    <Compile Include="Forms\FrAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrAbout.Designer.cs">
+      <DependentUpon>FrAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrHome.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +149,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\UtlFile.cs" />
     <Compile Include="ViewModels\VMHome.cs" />
+    <EmbeddedResource Include="Forms\FrAbout.resx">
+      <DependentUpon>FrAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrHome.resx">
       <DependentUpon>FrHome.cs</DependentUpon>
     </EmbeddedResource>
@@ -201,6 +210,14 @@
     <Folder Include="InputModels\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\iconVolumeOff.ico" />
+    <Content Include="Assets\iconVolumeOn.ico" />
+    <Content Include="CHANGELOG.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="README.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Assets\iconInfo.ico" />
     <None Include="Assets\iconSettings.ico" />
     <Content Include="Models\CtxCommander.Context.tt">

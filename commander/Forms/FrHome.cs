@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -22,34 +23,38 @@ namespace commander.Forms
         //utilites
         private readonly UtlFile _utlFile;
 
-        private string _applicationPath;
+        private readonly string _appVersion;
+        private readonly string _applicationPath;
+        private bool _isVolumeOn;
 
 
         public FrHome()
         {
-            InitializeComponent();
-
             //initialize db entity
             _ettCommander = new EttCommander();
 
             //initialize utilities
             _utlFile = new UtlFile();
 
+            //get application version
+            _appVersion = $"v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+
             //get application base path
             _applicationPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            //set application sound to on
+            _isVolumeOn = true;
+
+            InitializeComponent();
         }
 
         private void FrHome_Load(object sender, EventArgs e)
         {
-            //set application version label
-            string appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            lblAppVersion.Text = $"v{appVersion}";
+            //set application version text
+            lblAppVersion.Text = _appVersion;
 
             //load project list box with user's projects
             LbxProjects_Populate();
-
-            ////load project scripts
-            //DataGridProjectScripts_Populate();
         }
 
         //START -- BUTTONS
@@ -185,6 +190,19 @@ namespace commander.Forms
             DgvProjectScripts_Populate();
         }
 
+        private void BtnInfo_Click(object sender, EventArgs e)
+        {
+            FrAbout frAbout = new FrAbout(_appVersion);
+            frAbout.Show();
+        }
+
+        private void BtnVolume_Click(object sender, EventArgs e)
+        {
+            _isVolumeOn = !_isVolumeOn;
+
+            btnVolume.BackgroundImage = (_isVolumeOn ? Properties.Resources.iconVolumeOn : Properties.Resources.iconVolumeOff).ToBitmap();
+        }
+
         //END -- BUTTONS
 
         //START -- LIST BOXES
@@ -294,7 +312,182 @@ namespace commander.Forms
             dgvProjectScripts.DataSource = dgvBindsrcProjectScripts;
         }
 
+        private void DgvProjectScripts_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void DgvProjectScripts_KeyDown(object sender, KeyEventArgs e)
+        {
+            //run selected script on enter
+            if (e.KeyCode == Keys.Return)
+            {
+                RunSelectedScript();
+            }
+        }
+
         private void DgvProjectScripts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //only run script when the double clicked column is the leftmost column
+            if (e.ColumnIndex != -1) return;
+
+            //run selected script
+            RunSelectedScript();
+        }
+
+        private void DgvProjectScripts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            //string newCellValue = dataGridProjectScripts.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+            //get selected row from data grid
+            VMHome.ProjectScript dgvProjectScriptsSelectedRow = DgvProjectScripts_GetSelectedRowByCell();
+
+            //make sure the selected item is available
+            if (dgvProjectScriptsSelectedRow == null) return;
+
+            //get selected script entity's from database
+            var repoProjectScript = _ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
+
+            //make sure data is exist in database
+            if (repoProjectScript == null)
+            {
+                MessageBox.Show($"script '{dgvProjectScriptsSelectedRow.Name}' is not found");
+
+                return;
+            }
+
+            //update
+            repoProjectScript.name = dgvProjectScriptsSelectedRow.Name;
+            repoProjectScript.script = dgvProjectScriptsSelectedRow.Script;
+
+            //commit
+            _ettCommander.SaveChanges();
+
+            //reload project script data grid
+            DgvProjectScripts_Populate();
+        }
+
+        //START -- DGV PROJECT SCRIPT DRAG AND DROP
+
+        //drag and drop helper properties
+        private int _dgvProjectScriptDragRow = -1;
+        private Label _dgvProjectScriptDragLabel = null;
+
+        private void DgvProjectScripts_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
+                _dgvProjectScriptDragRow = e.RowIndex;
+                if (_dgvProjectScriptDragLabel == null) _dgvProjectScriptDragLabel = new Label();
+                _dgvProjectScriptDragLabel.Text = dgvProjectScripts[e.ColumnIndex, e.RowIndex].Value.ToString();
+                _dgvProjectScriptDragLabel.Parent = dgvProjectScripts;
+                _dgvProjectScriptDragLabel.Location = e.Location;
+            }
+        }
+
+        private void DgvProjectScripts_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && _dgvProjectScriptDragLabel != null)
+            {
+                _dgvProjectScriptDragLabel.Location = e.Location;
+                dgvProjectScripts.ClearSelection();
+            }
+        }
+
+        private void DgvProjectScripts_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var hit = dgvProjectScripts.HitTest(e.X, e.Y);
+                int dropRow = -1;
+                if (hit.Type != DataGridViewHitTestType.None)
+                {
+                    dropRow = hit.RowIndex;
+                    if (_dgvProjectScriptDragRow >= 0)
+                    {
+                        int tgtRow = dropRow + (_dgvProjectScriptDragRow > dropRow ? 1 : 0);
+                        if (tgtRow != _dgvProjectScriptDragRow)
+                        {
+
+                            //START -- MOVE DATA SOURCE
+
+                            var currentSelectedBindingSource = (VMHome.ProjectScript)dgvBindsrcProjectScripts.Current;
+
+                            var oldValue = currentSelectedBindingSource;
+
+                            var newValue = currentSelectedBindingSource;
+
+                            dgvBindsrcProjectScripts.Remove(oldValue);
+
+                            dgvBindsrcProjectScripts.Insert(tgtRow, newValue);
+
+                            dgvProjectScripts.Rows[tgtRow].Selected = true;
+
+                            //END -- MOVE DATA SOURCE
+
+                            //START -- CHANGE SCRIPT ORDER IN DATABASE
+
+                            //get selected project from listbox
+                            VMHome.Project lbxProjectsSelectedItem = LbxProjects_GetSelectedItem();
+
+                            //get selected project from database
+                            var repoProject = _ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
+
+                            //make sure data is exist in database
+                            if (repoProject == null)
+                            {
+                                MessageBox.Show($"project '{lbxProjectsSelectedItem.Name}' not found in database");
+
+                                return;
+                            }
+
+                            //update all  scripts order
+                            var repoProjectScripts = repoProject.project_script;
+
+                            //order counter
+                            int order = 0;
+
+                            foreach (VMHome.ProjectScript script in dgvBindsrcProjectScripts)
+                            {
+                                //get one from database
+                                var repoProjectScript = repoProjectScripts.Single(m => m.id == script.Id);
+
+                                //update database order
+                                repoProjectScript.order = ++order;
+                            }
+
+                            //commit
+                            _ettCommander.SaveChanges();
+
+                            //END -- CHANGE SCRIPT ORDER IN DATABASE
+                        }
+                    }
+                }
+                else dgvProjectScripts.Rows[_dgvProjectScriptDragRow].Selected = true;
+
+                //remove dragging label
+                if (_dgvProjectScriptDragLabel != null)
+                {
+                    _dgvProjectScriptDragLabel.Dispose();
+                    _dgvProjectScriptDragLabel = null;
+                }
+            }
+        }
+
+        //END-- DGV PROJECT SCRIPT DRAG AND DROP
+
+        //END -- DATA GRIDS
+
+        //START -- HELPERS
+
+        //combine script directory with file name
+        private string CombineScriptDirectoryWithFileName(string databasePath) => Path.Combine(_applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, databasePath);
+
+        //combine project name with script name
+        private string CombineProjectNameWithScriptName(string projectName, string scriptName) => $"{projectName} {scriptName}.{CNSTSTRING.FILEEXTENSION_CMD}".Replace(" ", "_");
+
+        //run selected script in grid
+        private void RunSelectedScript()
         {
             //get selected row from data grid
             VMHome.ProjectScript dgvProjectScriptsSelectedRow = DgvProjectScripts_GetSelectedRowByCell();
@@ -358,6 +551,9 @@ namespace commander.Forms
 
                 //delete temporary file
                 _utlFile.Delete(filePath);
+
+                //play sound if user wants it
+                if(_isVolumeOn) SystemSounds.Hand.Play();
             };
 
             //start process
@@ -375,168 +571,6 @@ namespace commander.Forms
             //commit
             _ettCommander.SaveChanges();
         }
-
-        private void DgvProjectScripts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            //string newCellValue = dataGridProjectScripts.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-
-            //get selected row from data grid
-            VMHome.ProjectScript dgvProjectScriptsSelectedRow = DgvProjectScripts_GetSelectedRowByCell();
-
-            //make sure the selected item is available
-            if (dgvProjectScriptsSelectedRow == null) return;
-
-            //get selected script entity's from database
-            var repoProjectScript = _ettCommander.project_script.SingleOrDefault(m => m.id == dgvProjectScriptsSelectedRow.Id);
-
-            //make sure data is exist in database
-            if (repoProjectScript == null)
-            {
-                MessageBox.Show($"script '{dgvProjectScriptsSelectedRow.Name}' is not found");
-
-                return;
-            }
-
-            //update
-            repoProjectScript.name = dgvProjectScriptsSelectedRow.Name;
-            repoProjectScript.script = dgvProjectScriptsSelectedRow.Script;
-
-            //commit
-            _ettCommander.SaveChanges();
-
-            //reload project script data grid
-            DgvProjectScripts_Populate();
-        }
-
-        //START -- DGV PROJECT SCRIPT DRAG AND DROP
-
-        //double click helper properties
-        //these properties is used to prevent conflict between double click and drag and drop
-        private bool _isDragging;
-        private Point _clickPoint;
-
-        //drag and drop helper properties
-        private int _dgvProjectScriptDragRow = -1;
-        private Label _dgvProjectScriptDragLabel = null;
-
-        private void DgvProjectScripts_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if(e.Button == MouseButtons.Right)
-            {
-                if (e.ColumnIndex < 0 || e.RowIndex < 0) return;
-                _dgvProjectScriptDragRow = e.RowIndex;
-                if (_dgvProjectScriptDragLabel == null) _dgvProjectScriptDragLabel = new Label();
-                _dgvProjectScriptDragLabel.Text = dgvProjectScripts[e.ColumnIndex, e.RowIndex].Value.ToString();
-                _dgvProjectScriptDragLabel.Parent = dgvProjectScripts;
-                _dgvProjectScriptDragLabel.Location = e.Location;
-            }
-        }
-
-        private void DgvProjectScripts_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && _dgvProjectScriptDragLabel != null)
-            {
-                _dgvProjectScriptDragLabel.Location = e.Location;
-                dgvProjectScripts.ClearSelection();
-            }
-        }
-
-        private void DgvProjectScripts_MouseUp(object sender, MouseEventArgs e)
-        {
-            if(e.Button == MouseButtons.Right)
-            {
-                var hit = dgvProjectScripts.HitTest(e.X, e.Y);
-                int dropRow = -1;
-                if (hit.Type != DataGridViewHitTestType.None)
-                {
-                    dropRow = hit.RowIndex;
-                    if (_dgvProjectScriptDragRow >= 0)
-                    {
-                        int tgtRow = dropRow + (_dgvProjectScriptDragRow > dropRow ? 1 : 0);
-                        if (tgtRow != _dgvProjectScriptDragRow)
-                        {
-
-                            //START -- MOVE DATA SOURCE
-
-                            var currentSelectedBindingSource = (VMHome.ProjectScript)dgvBindsrcProjectScripts.Current;
-
-                            var oldValue = currentSelectedBindingSource;
-
-                            var newValue = currentSelectedBindingSource;
-
-                            dgvBindsrcProjectScripts.Remove(oldValue);
-
-                            dgvBindsrcProjectScripts.Insert(tgtRow, newValue);
-
-                            //END -- MOVE DATA SOURCE
-
-                            //DataRow dtRow = dataTable.Rows[DgvProjectScriptDragRow];
-                            //DataRow newRow = dataTable.NewRow();
-                            //newRow.ItemArray = dataTable.Rows[DgvProjectScriptDragRow].ItemArray; // we need to clone the values
-
-                            //dataTable.Rows.Remove(dtRow);
-                            //dataTable.Rows.InsertAt(newRow, tgtRow);
-
-                            //dgvProjectScripts.Refresh();
-                            dgvProjectScripts.Rows[tgtRow].Selected = true;
-
-                            //START -- CHANGE SCRIPT ORDER IN DATABASE
-
-                            //get selected project from listbox
-                            VMHome.Project lbxProjectsSelectedItem = LbxProjects_GetSelectedItem();
-
-                            //get selected project from database
-                            var repoProject = _ettCommander.projects.SingleOrDefault(m => m.id == lbxProjectsSelectedItem.Id);
-
-                            //make sure data is exist in database
-                            if (repoProject == null)
-                            {
-                                MessageBox.Show($"project '{lbxProjectsSelectedItem.Name}' not found in database");
-
-                                return;
-                            }
-
-                            //update all  scripts order
-                            var repoProjectScripts = repoProject.project_script;
-
-                            //order counter
-                            int order = 0;
-
-                            foreach (VMHome.ProjectScript script in dgvBindsrcProjectScripts)
-                            {
-                                //get one from database
-                                var repoProjectScript = repoProjectScripts.Single(m => m.id == script.Id);
-
-                                //update database order
-                                repoProjectScript.order = ++order;
-                            }
-
-                            //commit
-                            _ettCommander.SaveChanges();
-
-                            //END -- CHANGE SCRIPT ORDER IN DATABASE
-                        }
-                    }
-                }
-                else { dgvProjectScripts.Rows[_dgvProjectScriptDragRow].Selected = true; }
-
-                if (_dgvProjectScriptDragLabel != null)
-                {
-                    _dgvProjectScriptDragLabel.Dispose();
-                    _dgvProjectScriptDragLabel = null;
-                }
-            }
-        }
-
-        //END-- DGV PROJECT SCRIPT DRAG AND DROP
-
-        //END -- DATA GRIDS
-
-        //START -- HELPERS
-
-        private string CombineScriptDirectoryWithFileName(string databasePath) => Path.Combine(_applicationPath, CNSTSTRING.FOLDERNAME_USERSCRIPTS, databasePath);
-
-        private string CombineProjectNameWithScriptName(string projectName, string scriptName) => $"{projectName} {scriptName}.{CNSTSTRING.FILEEXTENSION_CMD}".Replace(" ", "_");
 
         //END -- HELPERS
     }
